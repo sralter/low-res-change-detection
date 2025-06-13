@@ -1,0 +1,7 @@
+,0,1
+0,Mean Δμ,0.004
+1,Std Δμ,0.002
+2,Max Δμ,0.021
+3,Threshold,0.009
+4,% patches > thr,13.38%
+5,Patch grid size,489 x 428
