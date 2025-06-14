@@ -57,39 +57,38 @@ uv pip install -r requirements.txt
 [Back to TOC](#table-of-contents)
 
 ```text
-├── documents/                  # Project reports, presentations, and other literature
-└── results/                    # Where the best trained model and older training runs are saved
-    ├── _old/                   # Older training runs are saved here
-    └── hp_1/                   # Best trained model, inference, and tensorboard files
-└── secrets_templates/          # Template secret files for credentials
+├── documents/                          # Project reports, presentations, and other literature
+└── results/                            # Where the best trained model and older training runs are saved
+    └── hp_1/                           # Best trained model, inference, and tensorboard files
+└── secrets_templates/                  # Template secret files for credentials
     ├── aws_creds_file_template.json
     ├── google_earth_engine_creds_file_template.json
     └── email_creds_file_template.json
-└── sources/                    # Folders for other projects that inspired this one
-└── streamlit/                  # Files supporting the presentation and project demo
-    ├── Home.py                 # Script that defines Streamlit dashboard
-    ├── best_model.pt           # Copy of best model found in hp_1 folder above
+└── sources/                            # Folders for other projects that inspired this one
+└── streamlit/                          # Files supporting the presentation and project demo
+    ├── Home.py                         # Script that defines Streamlit dashboard
+    ├── best_model.pt                   # Copy of best model found in hp_1 folder above
     ├── build_dataset_streamlit.py      # Streamlit-specific script of build_dataset.py
-    ├── helpers.py              # Script with helper functions for Streamlit app
-    ├── inference_streamlit.py  # Streamlit-specific script of inference.py
+    ├── helpers.py                      # Script with helper functions for Streamlit app
+    ├── inference_streamlit.py          # Streamlit-specific script of inference.py
     ├── inspect_dataset_streamlit.py    # Streamlit-specific script of inspect_dataset.py
-    ├── prepare_dataset.py      # Copy of prepare_dataset.py for Streamlit app
-    ├── vae.py                  # Copy of vae.py for Streamlit app
+    ├── prepare_dataset.py              # Copy of prepare_dataset.py for Streamlit app
+    ├── vae.py                          # Copy of vae.py for Streamlit app
     └── pages/
         ├── 1_Presentation_and_Demo.py  # Script to show Google Doc presentation on one side and demo on the other
         └── 2_Only_Presentation.py      # Script to show just the Google Doc presentation
-├── .gitignore.txt              # .gitignore document
-├── README.md                   # README document
-├── build_dataset.py            # Collect and organize Sentinel-2 imagery via GEE and xarray into a dataset
-├── hp_search.py                # Entry point: hyperparameter search orchestration with Optuna
-├── inference.py                # Run inference on new imagery using trained model
-├── inspect_dataset.py          # Inspect and summarize dataset statistics
-├── prepare_dataset.py          # Further dataset preparation (e.g., NDVI computation)
-├── requirements.txt            # Python dependencies
-├── train_vae.py                # Entry point: train VAE model in one training run
-├── trainer.py                  # Trainer utilities (logging, checkpointing, metrics)
-├── vae.py                      # Define the VAE model architecture
-├── visualize_nn.py             # (Optional) Visualize network architecture
+├── .gitignore.txt                      # .gitignore document
+├── README.md                           # README document
+├── build_dataset.py                    # Collect and organize Sentinel-2 imagery via GEE and xarray into a dataset
+├── hp_search.py                        # Entry point: hyperparameter search orchestration with Optuna
+├── inference.py                        # Run inference on new imagery using trained model
+├── inspect_dataset.py                  # Inspect and summarize dataset statistics
+├── prepare_dataset.py                  # Further dataset preparation (e.g., NDVI computation)
+├── requirements.txt                    # Python dependencies
+├── train_vae.py                        # Entry point: train VAE model in one training run
+├── trainer.py                          # Trainer utilities (logging, checkpointing, metrics)
+├── vae.py                              # Define the VAE model architecture
+├── visualize_nn.py                     # (Optional) Visualize network architecture
 ```
 
 ## Secrets Configuration <a name='secrets'></a>
