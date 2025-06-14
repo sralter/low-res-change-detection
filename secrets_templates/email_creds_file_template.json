@@ -1,0 +1,7 @@
+{
+  "smtp_host": "smtp.mail.me.com",
+  "smtp_port": 587,
+  "smtp_user": "username@email.com",
+  "smtp_pass": "app-specific-password",
+  "notify_to": "username@email.com"
+}
