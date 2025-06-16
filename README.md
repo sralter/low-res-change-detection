@@ -25,7 +25,7 @@ The model integrates the following data:
 4. [Usage](#usage)
    * [Containerized Usage with Docker](#container)
    * [Running the Scripts](#script)
-      *[Build Dataset](#build_dataset)
+      * [Build Dataset](#build_dataset)
       * [Inspect Dataset](#inspect_dataset)
       * [Train Model](#train_vae)
       * [Run Hyperparameter Search](#hp_search)
