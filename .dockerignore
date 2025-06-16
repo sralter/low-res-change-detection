@@ -1,0 +1,9 @@
+# .dockerignore
+.git
+__pycache__/
+*.pyc
+data/
+results/
+secrets_templates/
+secrets/
+*.env

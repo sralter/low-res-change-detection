@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    image: low-res-change-detector:latest
+    # loads any ENV vars you put in a top-level .env file
+    env_file:
+      - .env
+    # mounts your project (code, data, secrets) into the container
+    volumes:
+      - .:/app
+    entrypoint: ["python", "-u"]
+    tty: true
