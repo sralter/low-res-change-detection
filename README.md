@@ -152,6 +152,8 @@ Refer to the below sections when running each process. All scripts are run from 
 4. [Inference](#inference)
 5. [Visualize NN](#visualize_nn)
 
+If you want to run the scripts within Docker, instead of starting with `python` as in: `python script_name.py --arg1 --arg2 ...`, start with: `docker compose run --rm app script_name.py --arg1 --arg2 ...` instead.
+
 #### 1. Build Dataset <a name='build_dataset'></a>
 
 [Back to TOC](#table-of-contents)
