@@ -136,7 +136,15 @@ The workflow is simple:
    cd low-res-change-detection
    docker compose up --build -d
    ```
-2. Execute the scripts
+2. Prepare secrets folder...
+   ```bash
+   mkdir secrets
+   cp secrets_templates/google_earth_engine_creds_file_template.json secrets/google_earth_engine_creds_file.json
+   cp secrets_templates/aws_creds_file_template.json secrets/aws_creds_file.json
+   cp secrets_templates/email_creds_file_template.json secrets/email_creds_file.json
+   ```
+3. ...And populate the .JSONs in the secrets folder with your credentials
+4. Execute the scripts
    ```bash
    docker compose run --rm app build_dataset.py [your args …]
    ```
