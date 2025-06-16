@@ -60,7 +60,7 @@ uv pip install -r requirements.txt
 **For Google Earth Engine**:  
 Go to the [Earth Engine Apps guide](https://developers.google.com/earth-engine/guides/app_key) and create an API key.
 
-**For AWS**:
+**For AWS**:  
 We recommend creating your own S3 bucket when saving datasets to the cloud. Follow AWS' instructions on how to retrieve the bucket's credentials for your use.
 
 ### Install dependencies <a name='dependencies'></a>
