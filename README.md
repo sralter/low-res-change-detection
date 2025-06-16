@@ -23,28 +23,49 @@ The model integrates the following data:
 2. [Project Structure](#project_structure)
 3. [Secrets Configuration](#secrets)
 4. [Usage](#usage)
-   * [Build Dataset](#build_dataset)
-   * [Inspect Dataset](#inspect_dataset)
-   * [Train Model](#train_vae)
-   * [Run Hyperparameter Search](#hp_search)
-   * [Inference](#inference)
-   * [Visualize Neural Network (optional)](#visualize_nn)
+   * [Containerized Usage with Docker](#container)
+   * [Running the Scripts](#script)
+      *[Build Dataset](#build_dataset)
+      * [Inspect Dataset](#inspect_dataset)
+      * [Train Model](#train_vae)
+      * [Run Hyperparameter Search](#hp_search)
+      * [Inference](#inference)
+      * [Visualize Neural Network (optional)](#visualize_nn)
 5. [For Further Reading](#further)
 
-## Requirements <a name='requirements'></a>
+## 1. Requirements <a name='requirements'></a>
 
 [Back to TOC](#table-of-contents)
 
 * Python 3.12.9+
-* Google Earth Engine Python API
+* Google Earth Engine Python API Key (see [below](#gee))
+* AWS credentials JSON (see [below](#gee))
 * xarray, rasterio, rio-xarray
 * PyTorch
 * Optuna (for hyperparameter search)
-* matplotlib
-* numpy, pandas
+* numpy, pandas, matplotlib
 * streamlit (optional, for front-end interaction)
 
+### Install
+
+```bash
+uv pip install --upgrade pip
+uv pip install -r requirements.txt
+```
+
+### API Keys <a name='gee'></a>
+
+[Back to TOC](#table-of-contents)
+
+**For Google Earth Engine**:  
+Go to the [Earth Engine Apps guide](https://developers.google.com/earth-engine/guides/app_key) and create an API key.
+
+**For AWS**:
+We recommend creating your own S3 bucket when saving datasets to the cloud. Follow AWS' instructions on how to retrieve the bucket's credentials for your use.
+
 ### Install dependencies <a name='dependencies'></a>
+
+[Back to TOC](#table-of-contents)
 
 Use the provided requirements.txt to install the dependencies for this project:
 
@@ -52,52 +73,75 @@ Use the provided requirements.txt to install the dependencies for this project:
 uv pip install -r requirements.txt
 ```
 
-## Project Structure <a name='project_structure'></a>
+## 2. Project Structure <a name='project_structure'></a>
 
 [Back to TOC](#table-of-contents)
 
 ```text
-├── documents/                          # Project reports, presentations, and other literature
-└── results/                            # Where the best trained model and older training runs are saved
-    └── hp_1/                           # Best trained model, inference, and tensorboard files
-└── secrets_templates/                  # Template secret files for credentials
+├── documents/                  # Project reports, presentations, and other literature
+└── results/                    # Where the best trained model and older training runs are saved
+    ├── _old/                   # Older training runs are saved here
+    └── hp_1/                   # Best trained model, inference, and tensorboard files
+└── secrets_templates/          # Template secret files for credentials
     ├── aws_creds_file_template.json
     ├── google_earth_engine_creds_file_template.json
     └── email_creds_file_template.json
-└── sources/                            # Folders for other projects that inspired this one
-└── streamlit/                          # Files supporting the presentation and project demo
-    ├── Home.py                         # Script that defines Streamlit dashboard
-    ├── best_model.pt                   # Copy of best model found in hp_1 folder above
+└── sources/                    # Folders for other projects that inspired this one
+└── streamlit/                  # Files supporting the presentation and project demo
+    ├── Home.py                 # Script that defines Streamlit dashboard
+    ├── best_model.pt           # Copy of best model found in hp_1 folder above
     ├── build_dataset_streamlit.py      # Streamlit-specific script of build_dataset.py
-    ├── helpers.py                      # Script with helper functions for Streamlit app
-    ├── inference_streamlit.py          # Streamlit-specific script of inference.py
+    ├── helpers.py              # Script with helper functions for Streamlit app
+    ├── inference_streamlit.py  # Streamlit-specific script of inference.py
     ├── inspect_dataset_streamlit.py    # Streamlit-specific script of inspect_dataset.py
-    ├── prepare_dataset.py              # Copy of prepare_dataset.py for Streamlit app
-    ├── vae.py                          # Copy of vae.py for Streamlit app
+    ├── prepare_dataset.py      # Copy of prepare_dataset.py for Streamlit app
+    ├── vae.py                  # Copy of vae.py for Streamlit app
     └── pages/
         ├── 1_Presentation_and_Demo.py  # Script to show Google Doc presentation on one side and demo on the other
         └── 2_Only_Presentation.py      # Script to show just the Google Doc presentation
-├── .gitignore.txt                      # .gitignore document
-├── README.md                           # README document
-├── build_dataset.py                    # Collect and organize Sentinel-2 imagery via GEE and xarray into a dataset
-├── hp_search.py                        # Entry point: hyperparameter search orchestration with Optuna
-├── inference.py                        # Run inference on new imagery using trained model
-├── inspect_dataset.py                  # Inspect and summarize dataset statistics
-├── prepare_dataset.py                  # Further dataset preparation (e.g., NDVI computation)
-├── requirements.txt                    # Python dependencies
-├── train_vae.py                        # Entry point: train VAE model in one training run
-├── trainer.py                          # Trainer utilities (logging, checkpointing, metrics)
-├── vae.py                              # Define the VAE model architecture
-├── visualize_nn.py                     # (Optional) Visualize network architecture
+├── .gitignore.txt              # .gitignore document
+├── README.md                   # README document
+├── build_dataset.py            # Collect and organize Sentinel-2 imagery via GEE and xarray into a dataset
+├── hp_search.py                # Entry point: hyperparameter search orchestration with Optuna
+├── inference.py                # Run inference on new imagery using trained model
+├── inspect_dataset.py          # Inspect and summarize dataset statistics
+├── prepare_dataset.py          # Further dataset preparation (e.g., NDVI computation)
+├── requirements.txt            # Python dependencies
+├── train_vae.py                # Entry point: train VAE model in one training run
+├── trainer.py                  # Trainer utilities (logging, checkpointing, metrics)
+├── vae.py                      # Define the VAE model architecture
+├── visualize_nn.py             # (Optional) Visualize network architecture
 ```
 
-## Secrets Configuration <a name='secrets'></a>
+## 3. Secrets Configuration <a name='secrets'></a>
 
 [Back to TOC](#table-of-contents)
 
 You will need to get an AWS credentials file, a Google Earth Engine account, and if you want the `hp_search.py` script to send you an email, you will also need to set up an app-specific password for your mail client.
 
-## Usage <a name='usage'></a>
+## 4. Usage <a name='usage'></a>
+
+[Back to TOC](#table-of-contents)
+
+### Containerized Usage with Docker <a name='container'></a>
+
+[Back to TOC](#table-of-contents)
+
+We’ve provided a `Dockerfile` and `docker-compose.yml` so you can “clone → build → run” without worrying about system setup.
+
+The workflow is simple:
+1. Build the docker image
+   ```bash
+   git clone https://github.com/sralter/low-res-change-detection.git
+   cd low-res-change-detection
+   docker compose up --build -d
+   ```
+2. Execute the scripts
+   ```bash
+   docker compose run --rm app build_dataset.py [your args …]
+   ```
+
+### Running the Scripts <a name='script'></a>
 
 [Back to TOC](#table-of-contents)
 
@@ -108,7 +152,7 @@ Refer to the below sections when running each process. All scripts are run from 
 4. [Inference](#inference)
 5. [Visualize NN](#visualize_nn)
 
-### 1. Build Dataset <a name='build_dataset'></a>
+#### 1. Build Dataset <a name='build_dataset'></a>
 
 [Back to TOC](#table-of-contents)
 
@@ -122,7 +166,7 @@ python build_dataset.py \
     --geohashes 9vgm0,9vgm1
 ```
 
-### 2. Inspect Dataset <a name='inspect_dataset'></a>
+#### 2. Inspect Dataset <a name='inspect_dataset'></a>
 
 [Back to TOC](#table-of-contents)
 
@@ -136,7 +180,7 @@ python inspect_dataset.py \
     --dates first last
 ```
 
-### 3a. Train Model <a name='train_vae'></a>
+#### 3a. Train Model <a name='train_vae'></a>
 
 [Back to TOC](#table-of-contents)
 
@@ -155,7 +199,7 @@ python train_vae.py \
     --stage-zarr
 ```
 
-### 3b. Run Hyperparameter Search <a name='hp_search'></a>
+#### 3b. Run Hyperparameter Search <a name='hp_search'></a>
 
 [Back to TOC](#table-of-contents)
 
@@ -175,7 +219,7 @@ python hp_search.py \
     --trial-patience 3
 ```
 
-### 4. Inference <a name='inference'></a>
+#### 4. Inference <a name='inference'></a>
 
 [Back to TOC](#table-of-contents)
 
@@ -191,7 +235,7 @@ python inference.py \
     --stage-zarr
 ```
 
-### 5. Visualize Neural Network (Optional) <a name='visualize_nn'</a>
+#### 5. Visualize Neural Network (Optional) <a name='visualize_nn'</a>
 
 [Back to TOC](#table-of-contents)
 
@@ -200,7 +244,7 @@ python visualize_nn.py \
     --model path/to/best/model.pt \
 ```
 
-## Further Reading <a name='further'></a>
+## 5. Further Reading <a name='further'></a>
 
 [Back to TOC](#table-of-contents)
 
